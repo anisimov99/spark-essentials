@@ -204,3 +204,8 @@ spark-warehouse/
 
 
 # End of https://www.gitignore.io/api/sbt,scala,spark,intellij
+
+.vscode
+.metals
+project
+

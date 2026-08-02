@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    environment:
+      TZ: "Europe/Amsterdam"
+      POSTGRES_USER: "docker"
+      POSTGRES_PASSWORD: "docker"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./sql:/docker-entrypoint-initdb.d"
+
+  spark-shell:
+    image: spark:scala
+    container_name: scala_spark_shell
+    user: root
+    stdin_open: true
+    tty: true
+    depends_on:
+      - postgres
+    command:
+      - /bin/bash
+      - -c
+      - |
+        mkdir -p /nonexistent
+        chown -R spark:spark /nonexistent
+        exec su spark -c "/opt/spark/bin/spark-shell --jars /opt/spark-jars/postgresql-42.7.4.jar"
+    volumes:
+      - ./src/main/resources/data:/opt/spark-data
+      - ./spark-jars:/opt/spark-jars
