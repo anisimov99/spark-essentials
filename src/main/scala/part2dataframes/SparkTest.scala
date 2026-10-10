@@ -1,5 +1,5 @@
 package part2dataframes
-
+import org.openjdk.jol.info.{ClassLayout, GraphLayout}
 import org.apache.spark.sql.{SparkSession, functions => F, types => T}
 import java.time.LocalDateTime
 
@@ -14,6 +14,17 @@ object SparkTest {
   import spark.implicits._
 
   def main(args: Array[String]): Unit = {
+
+    case class Person(name: String, age: Int)
+
+    // --- Size of a single object ---
+    val p = Person("abcd", 30)
+
+    // Shallow layout: headers, fields, padding of the Person object itself
+    println(ClassLayout.parseInstance(p).toPrintable)
+
+    // Deep size: Person + its String + the String's internal char/byte[] array
+    println("Total retained bytes: " + GraphLayout.parseInstance(p).totalSize())
     
     
     // ----------------- EXERCISE 1 -----------------------

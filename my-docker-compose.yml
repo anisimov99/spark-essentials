@@ -1,3 +1,4 @@
+name: my-spark-scala-shell
 services:
   postgres:
     image: postgres:17
@@ -13,7 +14,7 @@ services:
 
   spark-shell:
     image: spark:scala
-    container_name: scala_spark_shell
+    container_name: spark-scala-shell
     user: root
     stdin_open: true
     tty: true
@@ -25,7 +26,10 @@ services:
       - |
         mkdir -p /nonexistent
         chown -R spark:spark /nonexistent
-        exec su spark -c "/opt/spark/bin/spark-shell --jars /opt/spark-jars/postgresql-42.7.4.jar"
+        JARS=$$(echo /opt/spark-jars/*.jar | tr ' ' ',')
+        exec su spark -c "/opt/spark/bin/spark-shell --jars $$JARS"
+    ports:
+      - "4040:4040"
     volumes:
       - ./src/main/resources/data:/opt/spark-data
       - ./spark-jars:/opt/spark-jars

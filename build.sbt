@@ -15,5 +15,7 @@ libraryDependencies ++= Seq(
   "org.apache.logging.log4j" % "log4j-api" % log4jVersion,
   "org.apache.logging.log4j" % "log4j-core" % log4jVersion,
   // postgres for DB connectivity
-  "org.postgresql" % "postgresql" % postgresVersion
+  "org.postgresql" % "postgresql" % postgresVersion,
+  // Source: https://mvnrepository.com/artifact/org.openjdk.jol/jol-core
+  "org.openjdk.jol" % "jol-core" % "0.17"
 )
